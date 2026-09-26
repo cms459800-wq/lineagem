@@ -1,0 +1,28 @@
+---
+import '../styles.css';
+const { title, description, active = '' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const verification = process.env.NAVER_SITE_VERIFICATION;
+const links = [
+  { href: '/', label: '홈', key: 'home' },
+  { href: '/preparation/', label: '이사 준비', key: 'preparation' },
+  { href: '/packing/', label: '짐 정리·포장', key: 'packing' },
+  { href: '/moving-day/', label: '이사 당일', key: 'moving-day' },
+  { href: '/settling/', label: '입주 후 점검', key: 'settling' },
+  { href: '/about/', label: '소개', key: 'about' },
+];
+---
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title><meta name="description" content={description} /><meta name="robots" content="index,follow" />
+{verification && <meta name="naver-site-verification" content={verification} />}
+<link rel="canonical" href={canonical} /><link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+<meta property="og:type" content="website" /><meta property="og:locale" content="ko_KR" /><meta property="og:site_name" content="리더스이사" /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head><body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="site-header"><div class="wrap header-inner"><a class="brand" href="/" aria-label="리더스이사 홈"><span class="brand-mark" aria-hidden="true">L</span><span>리더스<span class="red">이사</span></span></a><nav aria-label="주요 메뉴"><ul>{links.map(link => <li><a href={link.href} aria-current={active === link.key ? 'page' : undefined}>{link.label}</a></li>)}</ul></nav></div></header>
+<main id="main"><slot /></main>
+<footer class="site-footer"><div class="wrap footer-grid"><div><strong>리더스이사</strong><p>이사 준비부터 새집 정리까지,<br />필요한 확인 사항을 순서대로 안내합니다.</p></div><nav aria-label="하단 메뉴"><a href="/preparation/">이사 준비</a><a href="/packing/">짐 정리·포장</a><a href="/moving-day/">이사 당일</a><a href="/settling/">입주 후 점검</a><a href="/about/">소개</a></nav></div></footer>
+</body></html>
